@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import template
-from payment import settings
+from payment import app_settings
 
 SYMBOL = {
         'GBP': '£',

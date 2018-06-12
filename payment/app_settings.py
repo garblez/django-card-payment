@@ -1,7 +1,7 @@
 from django.conf import settings
 
-STRIPE = getattr(settings, 'PAYMENT_STRIPE', [
-    ('PUBLIC', ""),
-    ('SECRET', ""),
-    ('CURRENCY', "USD")
-])
+
+STRIPE_SECRET = getattr(settings, 'STRIPE_SECRET', '')
+STRIPE_PUBLIC = getattr(settings, 'STRIPE_PUBLIC', '')
+STRIPE_CURRENCY = getattr(settings, 'STRIPE_CURRENCY', 'USD')
+

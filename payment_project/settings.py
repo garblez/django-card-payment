@@ -15,6 +15,28 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.8/howto/static-files/
+STATIC_URL = '/static/'
+STATIC_PATH = os.path.join(BASE_DIR, 'static')
+
+# Templates
+TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates')
+
+
+STATICFILES_DIRS = [
+    STATIC_PATH,
+]
+
+TEMPLATE_DIRS = [
+    TEMPLATE_PATH,
+]
+
+# Stripe settings - add in your own keys and currency
+STRIPE_PRIVATE = os.environ.get("STRIPE_SECRET", "sk_test_vGTac2bdtk2cXSK7HL6akgjX")
+STRIPE_PUBLIC = os.environ.get("STRIPE_PUBLIC", "pk_test_rTMabfKqSoQN5dmj6nMeTZhX")
+STRIPE_CURRENCY = "GBP"  # We are working in the UK and so require transactions in GBP
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -37,9 +59,14 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djangosecure',
+    'sslserver',
+    'payment'
+
 )
 
 MIDDLEWARE_CLASSES = (
+    'djangosecure.middleware.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,6 +86,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'django.template.context_processors.media',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -96,7 +124,12 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
 
-STATIC_URL = '/static/'
+
+
+# TLS
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 3600
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
