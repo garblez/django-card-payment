@@ -1,22 +1,30 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-"""
-When developing either User accounts or Customer, extend from this as a secondary
-class and implement this class' members as model entries.
-"""
-class CardPayer():
-    def __init__(self):
-        self.email = None
-        self.description = None
-        self.card_token = None
+from datetime import datetime
 
-    def set_description(self, description):
-        self.description = description
+import stripe
 
-    def set_card_token(self, card_token):
-        self.card_token = card_token
+from payment.app_settings import STRIPE_CURRENCY, STRIPE_SECRET
 
-    def set_email(self, email):
-        self.email = email
+class Card(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    card_token = models.CharField(max_length=256, null=True, blank=True)
 
-# TODO add a paying user model for DB storage: User model for rest of project but also inheriting from CardPayer
+    def __str__(self):
+        return self.user.username
+
+    def charge(self, amount):
+        try:
+            charge = stripe.Charge.create(
+                amount=amount,
+                currency=STRIPE_CURRENCY,
+                api_key=STRIPE_SECRET,
+                source=self.card_token,
+                description="[{0}]   Payment of {1}GBP made by {2}".format(
+                    datetime.now(), amount, self.email
+                )
+            )
+
+        except Exception as e:
+            print "An error occurred. Payment was declined."
