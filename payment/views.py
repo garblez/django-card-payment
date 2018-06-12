@@ -14,7 +14,7 @@ stripe.api_key = app_settings.STRIPE_SECRET
 
 
 def test(request):
-    return render(request, 'test.html', {})
+    return render(request, 'payment/test.html', {})
 
 def charge(request):
     context_dict = {}
@@ -32,7 +32,7 @@ def charge(request):
             and amount.
             """
 
-            form = request.POST.get('form', 'tok_chargeDeclined')
+            token = request.POST.get('stripeToken', 'tok_chargeDeclined')
 
 
             charge = stripe.Charge.create(
@@ -46,18 +46,26 @@ def charge(request):
             # We want to make sure that the card details stripe id is stored for future use in our database so we can
             # avoid card details being reentered in the future.
             # TODO: implement this feature for a customer account with card details taken from a profile settings page
-            payment.id = "tok_visa"
+
 
         except stripe.error.CardError as ce:
             # The card didn't go through for whatever reason. Let the client know (DEBUG)
             return HttpResponse("Card error: " + ce.message)
 
         # Likewise a DEBUG statement
-        return HttpResponse("Card payment worked for"+payment.id)
+        return HttpResponse("Card payment worked for"+token)
 
     else:
         # Just save this new payment model anyway and present the form to input the details.
-        payment.save()
-        return render(request, 'checkout/checkout.html', {})
+
+        return render(request, 'payment/charge.html', {})
 
 
+def charge_card(request):
+    return render(request, 'payment/charge.html', {'stripeToken':request.POST['stripeToken']})
+
+def save_card(request):
+    return render(request, 'payment/save.html', {'stripeToken': request.POST['stripeToken']})
+
+def test_save(request):
+    return render(request, 'payment/test.html', {'saving_card_details':True})

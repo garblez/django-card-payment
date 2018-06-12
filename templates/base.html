@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      {% block title %}
+      {% endblock %}
+    </title>
+
+    <!-- We include the following scripts on every page so that Stripe can detect anomalous behaviour
+         site-wide and so that we can make use of jQuery wherever we happen to need JS -->
+    <script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
+
+    <!-- Needed so that card details are authenticated on Stripe's side (PCI compliance) -->
+    <script src="https://js.stripe.com/v3/"></script>
+
+
+    {% block head_block %}
+    {% endblock %}
+  </head>
+
+  <body>
+    {% block body_block %}
+    {% endblock %}
+
+    {% block end_body_scripts_block %}
+    {% endblock %}
+  </body>
+
+</html>

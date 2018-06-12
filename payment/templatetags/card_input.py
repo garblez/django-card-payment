@@ -13,6 +13,6 @@ SYMBOL = {
 register = template.Library()
 
 
-@register.inclusion_tag('card_entry.html')
+@register.inclusion_tag('payment/card_entry.html')
 def card_entry_widget():
     return {}

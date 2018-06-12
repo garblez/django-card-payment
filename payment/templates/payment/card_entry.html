@@ -1,0 +1,79 @@
+{% load staticfiles %}
+
+
+
+
+{% if saving_card_details %}
+<form action="/save/"
+      method="post"
+      id="payment-form">
+
+  {% csrf_token %}
+
+  <div class="input-field">
+    <label for="card-element">
+      Credit or debit card
+    </label>
+
+    <div id="card-element">
+      <!-- A Stripe Element will be inserted here. -->
+    </div>
+
+    <!-- Used to display Element errors. -->
+    <div id="card-errors" role="alert"></div>
+  </div>
+
+  <br/>
+
+    <div id="card-entry-btn-container">
+      <button id="card-entry-btn">
+        {% if saving_card_details %}
+            Save
+        {% else %}
+            Pay
+        {% endif %}
+      </button>
+    </div>
+</form>
+
+{% else %}
+
+<form action="/charge/"
+      method="post"
+      id="payment-form">
+
+  {% csrf_token %}
+
+  <div class="input-field">
+    <label for="card-element">
+      Credit or debit card
+    </label>
+
+    <div id="card-element">
+      <!-- A Stripe Element will be inserted here. -->
+    </div>
+
+    <!-- Used to display Element errors. -->
+    <div id="card-errors" role="alert"></div>
+  </div>
+
+  <br/>
+
+    <div id="card-entry-btn-container">
+      <button id="card-entry-btn">
+        {% if saving_card_details %}
+            Save
+        {% else %}
+            Pay
+        {% endif %}
+      </button>
+    </div>
+</form>
+{% endif %}
+
+{% block end_body_scripts_block %}
+<!-- Import the client side script -->
+<script type="text/javascript" src="{% static 'javascript/app.js' %}"></script>
+
+<link rel="stylesheet" href="{% static 'stylesheets/style.css' %}">
+{% endblock %}

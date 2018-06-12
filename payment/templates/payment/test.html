@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load card_input %}
+
+{% block title %}
+    Input payment method
+{% endblock %}
+
+{% block body_block %}
+    {% card_entry_widget %}
+    <br />
+    <img src="{% static 'images/moose-face.jpg' %}" alt="Picture of a moose">
+{% endblock %}
