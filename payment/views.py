@@ -16,9 +16,11 @@ import stripe
 
 
 class SaveCard(View):
+    template = "payment/save_card.html"
+
     @login_required
     def get(self, request, *args, **kwargs):
-        pass
+        return render(request, self.template, {})
 
     @login_required
     def post(self, request, *args, **kwargs):
@@ -26,8 +28,10 @@ class SaveCard(View):
 
 
 class ChargeCard(View):
+    template = "payment/charge_card.html"
+
     def get(self, request, *args, **kwargs):
-        return render(request, 'payment/charge_card.html', {'amount': 500, 'currency': STRIPE_CURRENCY})
+        return render(request, self.template, {'amount': 500, 'currency': STRIPE_CURRENCY})
 
     def post(self, request, *args, **kwargs):
         print STRIPE_PRIVATE, STRIPE_CURRENCY, STRIPE_PUBLIC
@@ -63,6 +67,23 @@ class ChargeCard(View):
             )
 
             return HttpResponse("Charge succeeded for "+ token )
-
+        except stripe.error.CardError:
+            # Since the card was declined, stripe.error.CardError will be captured
+            pass
+        except stripe.error.RateLimitError as e:
+            # Too many requests sent to Stripe within a short time frame.
+            pass
+        except stripe.error.InvalidRequestError as e:
+            # Invalid parameters were given to Stripe
+            pass
+        except stripe.error.AuthenticationError as e:
+            # Authentication with Stripe's API failed (possible change in API keys)
+            pass
+        except stripe.error.APIConnectionError as e:
+            # Failed to connect to Stripe
+            pass
+        except stripe.error.StripeError as e:
+            # Generic Stripe card submission error: display an error to the user, email technical support.
+            pass
         except Exception as e:
             return HttpResponse("Charge declined: "+e.message)

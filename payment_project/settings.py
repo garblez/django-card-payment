@@ -33,7 +33,7 @@ TEMPLATE_DIRS = [
 ]
 
 # Stripe settings - add in your own keys and currency
-STRIPE_PRIVATE = os.environ.get("STRIPE_SECRET", "sk_test_vGTac2bdtk2cXSK7HL6akgjX")
+STRIPE_PRIVATE = os.environ.get("STRIPE_PRIVATE", "sk_test_vGTac2bdtk2cXSK7HL6akgjX")
 STRIPE_PUBLIC = os.environ.get("STRIPE_PUBLIC", "pk_test_rTMabfKqSoQN5dmj6nMeTZhX")
 STRIPE_CURRENCY = "GBP"  # We are working in the UK and so require transactions in GBP
 
