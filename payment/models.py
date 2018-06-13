@@ -9,7 +9,7 @@ from payment.app_settings import STRIPE_CURRENCY, STRIPE_SECRET
 
 class Card(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    card_token = models.CharField(max_length=256, null=True, blank=True)
+    token = models.CharField(max_length=256, null=True, blank=True)
 
     def __str__(self):
         return self.user.username

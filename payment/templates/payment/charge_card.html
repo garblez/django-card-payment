@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load card_input %}
+
+{% block title %}
+    Checkout
+{% endblock %}
+
+{% block body_block %}
+    <p>Content for the checkout page for an order will go here.</p>
+    <div class="card" style="width: 30em;">
+    {% card_entry_widget %}
+    <input form="payment-form"
+           type="submit" value="Submit"
+           style="margin-left: 2em; margin-bottom: 1em;"
+            class="btn">
+    </div>
+{% endblock %}
