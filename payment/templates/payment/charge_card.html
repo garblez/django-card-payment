@@ -15,7 +15,9 @@
                     <input type="email"
                            id="anon_email"
                            form="payment-form"
-                           style="height: 2em;">
+                           name="visitor_email"
+                           style="height: 2em;"
+                           required >
 
                     <label for="anon_email" style="">Email</label>
                 </div>
@@ -23,7 +25,7 @@
 
             <div class="col s4">
                 <button class="btn waves-effect waves-light" type="submit" name="action" form="payment-form">
-                    Purchase {{ amount }}
+                    {{ amount }}
                 </button>
             </div>
         </div>

@@ -1,7 +1,7 @@
 {% load staticfiles %}
 
 <div style="padding: 0.5em;">
-<form action="test.html" method="post" id="payment-form">
+<form action="charge/" method="post" id="payment-form">
   {% csrf_token %}
 
   <div class="input-field" style="margin-left: 1em; margin-right: 1em;">
