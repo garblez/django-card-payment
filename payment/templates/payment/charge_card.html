@@ -7,11 +7,26 @@
 
 {% block body_block %}
     <p>Content for the checkout page for an order will go here.</p>
-    <div class="card" style="width: 30em;">
-    {% card_entry_widget %}
-    <input form="payment-form"
-           type="submit" value="Submit"
-           style="margin-left: 2em; margin-bottom: 1em;"
-            class="btn">
+    <div class="card container" style="width: 30em; align-self: center; margin: 1em;">
+        {% card_entry_widget %}
+        <div class="row align-text-middle">
+            {% if not user.is_authenticated %}
+                <div class="input-field inline col s8">
+                    <input type="email"
+                           id="anon_email"
+                           form="payment-form"
+                           style="height: 2em;">
+
+                    <label for="anon_email" style="">Email</label>
+                </div>
+            {% endif %}
+
+            <div class="col s4">
+                <button class="btn waves-effect waves-light" type="submit" name="action" form="payment-form">
+                    Purchase {{ amount }}
+                </button>
+            </div>
+        </div>
+
     </div>
 {% endblock %}

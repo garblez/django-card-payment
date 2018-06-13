@@ -61,7 +61,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djangosecure',
     'sslserver',
-    'payment'
+    'payment',
 
 )
 
