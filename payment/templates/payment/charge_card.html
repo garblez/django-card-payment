@@ -8,6 +8,7 @@
 {% block body_block %}
     <p>Content for the checkout page for an order will go here.</p>
     <div class="card container" style="width: 30em; align-self: center; margin: 1em;">
+        {% csrf_token %}
         {% card_entry_widget %}
         <div class="row align-text-middle">
             {% if not user.is_authenticated %}

@@ -33,6 +33,7 @@ class ChargeCard(View):
         print STRIPE_PRIVATE, STRIPE_CURRENCY, STRIPE_PUBLIC
         stripe.api_key = STRIPE_PRIVATE
 
+
         form = VisitorEmailForm(request.POST)
         if not form.is_valid():
             raise Exception("Invalid submission form.")  # DEBUG
@@ -62,7 +63,7 @@ class ChargeCard(View):
                 description=description
             )
 
-            return HttpResponse("Charge succeeded for "+ token )
+            return HttpResponse("Charge made!")
 
         except Exception as e:
             return HttpResponse("Charge declined: "+e.message)
