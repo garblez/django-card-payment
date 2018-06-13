@@ -19,16 +19,23 @@
                            style="height: 2em;"
                            required >
 
-                    <label for="anon_email" style="">Email</label>
+                    <label for="visitor_email">Email</label>
                 </div>
             {% endif %}
 
             <div class="col s4">
                 <button class="btn waves-effect waves-light" type="submit" name="action" form="payment-form">
-                    {{ amount }}
+                    {{ amount }} {{ currency }}
                 </button>
             </div>
         </div>
+
+        <input type="hidden"
+               value="{{ amount }}"
+               id="amount"
+               style="visibility: hidden;"
+               form="payment-form"
+               name="amount">
 
     </div>
 {% endblock %}

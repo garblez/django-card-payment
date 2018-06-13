@@ -5,7 +5,7 @@ from datetime import datetime
 
 import stripe
 
-from payment.app_settings import STRIPE_CURRENCY, STRIPE_SECRET
+from payment.app_settings import STRIPE_CURRENCY, STRIPE_PRIVATE
 
 class Card(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -19,7 +19,7 @@ class Card(models.Model):
             charge = stripe.Charge.create(
                 amount=amount,
                 currency=STRIPE_CURRENCY,
-                api_key=STRIPE_SECRET,
+                api_key=STRIPE_PRIVATE,
                 source=self.card_token,
                 description="[{0}]   Payment of {1}GBP made by {2}".format(
                     datetime.now(), amount, self.email

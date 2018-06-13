@@ -9,10 +9,11 @@ from datetime import datetime
 
 from payment.forms import VisitorEmailForm
 from payment.models import Card
+from payment.app_settings import STRIPE_CURRENCY, STRIPE_PRIVATE, STRIPE_PUBLIC
 
 import stripe
 
-from payment.app_settings import STRIPE_CURRENCY, STRIPE_SECRET
+
 
 class SaveCard(View):
     @login_required
@@ -26,34 +27,37 @@ class SaveCard(View):
 
 class ChargeCard(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'payment/charge_card.html', {'amount': 500})
+        return render(request, 'payment/charge_card.html', {'amount': 500, 'currency': STRIPE_CURRENCY})
 
     def post(self, request, *args, **kwargs):
+        print STRIPE_PRIVATE, STRIPE_CURRENCY, STRIPE_PUBLIC
+        stripe.api_key = STRIPE_PRIVATE
 
+        form = VisitorEmailForm(request.POST)
+        if not form.is_valid():
+            raise Exception("Invalid submission form.")  # DEBUG
+
+        amount = form.cleaned_data['amount']
+        email = form.cleaned_data['visitor_email']
 
         if request.user.is_authenticated():
             email = request.user.email
-            print email
-        else:
-            form = VisitorEmailForm(request.POST)
-            if form.is_valid():
-                email = form.cleaned_data['visitor_email']
-                print email
-            else:
-                raise Exception("No contact email supplied")
 
         description = "[{0}]  Charge of {1}{2} made to account with email {3}".format(
-            datetime.now(), request.POST['amount'], STRIPE_CURRENCY, email
+            datetime.now(),
+            amount,
+            STRIPE_CURRENCY,
+            email
         )
 
+
         try:
-            token = request.POST.get('stripeToken', 'tok_invalidCard')
+            token = request.POST.get('stripeToken')
             print token
 
             charge = stripe.Charge.create(
-                amount=request.POST['amount'],
+                amount=amount,
                 currency=STRIPE_CURRENCY,
-                api_key=STRIPE_SECRET,
                 source=token,
                 description=description
             )

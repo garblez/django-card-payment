@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
 // Create a Stripe client.
     var stripe = Stripe('pk_test_rTMabfKqSoQN5dmj6nMeTZhX');
@@ -31,37 +30,37 @@ $(document).ready(function() {
 // Add an instance of the card Element into the `card-element` <div>.
     card.mount('#card-element');
 
+
 // Handle real-time validation errors from the card Element.
-    card.addEventListener('change', function (event) {
-        var displayError = document.getElementById('card-errors');
-        if (event.error) {
+    $(card).change(function(event){
+        var displayError = $('#card-errors');
+        if (event.error){
             displayError.textContent = event.error.message;
         } else {
             displayError.textContent = '';
         }
     });
 
-// Handle form submission.
-    var form = document.getElementById('payment-form');
-    form.addEventListener('submit', function (event) {
+    // Handle form submission
+    $('#payment-form').submit(function(event){
         event.preventDefault();
-
-        stripe.createToken(card).then(function (result) {
-            if (result.error) {
-                // Inform the user if there was an error.
-                var errorElement = document.getElementById('card-errors');
+        stripe.createToken(card).then(function(result){
+            if (result.error){
+                // Failure! Report errors to the user!
+                var errorElement = $('#card-errors');
                 errorElement.textContent = result.error.message;
             } else {
-                // Send the token to your server.
+                // Success! Send the token to the server
                 stripeTokenHandler(result.token);
             }
         });
     });
 
 
+
     function stripeTokenHandler(token) {
-        // Insert the token ID into the form so it gets submitted to the server
-        var form = document.getElementById('payment-form');
+        // Insert the token ID into the form so it gets submitted to the server;
+        var form = $('#payment-form');
         var hiddenInput = document.createElement('input');
         hiddenInput.setAttribute('type', 'hidden');
         hiddenInput.setAttribute('name', 'stripeToken');
