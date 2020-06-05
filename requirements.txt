@@ -1,6 +1,6 @@
 certifi==2018.4.16
 chardet==3.0.4
-Django==1.8
+Django==1.11.29
 django-secure==1.0.1
 django-sslserver==0.20
 idna==2.6
